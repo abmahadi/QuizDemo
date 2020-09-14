@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="15dp"
+    tools:context=".QuizActivity">
+
+    <TextView
+        android:id="@+id/textview_score"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Score : 0"
+        android:textSize="15sp"
+        android:textColor="@color/colorBlack"
+        ></TextView>
+    <TextView
+        android:id="@+id/textview_questionCount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Question : 1/x"
+        android:textSize="15sp"
+        android:textColor="@color/colorBlack"
+        android:layout_below="@id/textview_score"></TextView>
+
+    <TextView
+        android:id="@+id/textview_timeCounter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="00:30"
+        android:textSize="40sp"
+        android:textColor="@color/colorBlack"
+        android:layout_alignParentEnd="true"></TextView>
+
+    <TextView
+        android:id="@+id/textview_Question"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="question will be here \nquestion will be here\nquestion will be here"
+        android:layout_above="@id/radiogroup_answareOption"
+        android:layout_marginBottom="15dp"
+        android:layout_centerHorizontal="true"
+        android:textColor="@color/colorBlack"
+        android:textSize="20sp"></TextView>
+    <RadioGroup
+        android:id="@+id/radiogroup_answareOption"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true">
+
+        <RadioButton
+            android:id="@+id/radiobutton_option1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Option 1"
+            android:textColor="@color/colorBlack"
+            android:textSize="15sp"></RadioButton>
+        <RadioButton
+            android:id="@+id/radiobutton_option2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Option 2"
+            android:textColor="@color/colorBlack"
+            android:textSize="15sp"></RadioButton>
+        <RadioButton
+            android:id="@+id/radiobutton_option3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Option 3"
+            android:textColor="@color/colorBlack"
+            android:textSize="15sp"></RadioButton>
+
+    </RadioGroup>
+
+    <Button
+        android:id="@+id/button_confirm"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:text="Confirm"
+        android:padding="10dp"
+        android:textAllCaps="false"
+        android:textColor="@color/colorBlack"
+        android:layout_below="@id/radiogroup_answareOption"
+        android:layout_centerHorizontal="true"></Button>
+
+</RelativeLayout>
