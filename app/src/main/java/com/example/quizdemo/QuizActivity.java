@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RadioButton;
@@ -15,9 +16,11 @@ import android.widget.Toast;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 
 public class QuizActivity extends AppCompatActivity {
     public static  final String EXTRA_SCORE = "extraScore";
+    private static  final long COUNTDOWN_IN_MILLIS = 30000;
 
     private TextView tvScore;
     private TextView tvQuestionCount;
@@ -30,6 +33,10 @@ public class QuizActivity extends AppCompatActivity {
     private Button btnConfirm;
 
     private ColorStateList textColorDefoltRb;
+    private ColorStateList textColorDefoltCd;
+
+    private CountDownTimer countDownTimer;
+    private long timeLeftInMillis;
 
     private List<Question> questionList;
 
@@ -70,6 +77,8 @@ public class QuizActivity extends AppCompatActivity {
     private void checkAnswer() {
 
         answared = true;
+        countDownTimer.cancel();
+
         RadioButton rbSelected =findViewById(radioGroup.getCheckedRadioButtonId());
 
         int answerNr = radioGroup.indexOfChild(rbSelected)+1;
@@ -131,11 +140,48 @@ public class QuizActivity extends AppCompatActivity {
             answared =false;
             btnConfirm.setText("Confirm");
 
+            timeLeftInMillis =COUNTDOWN_IN_MILLIS;
+            startCountDown();
+
 
         }else{
             finishQuiz();
         }
 
+    }
+
+    private void startCountDown() {
+
+        countDownTimer =new CountDownTimer(timeLeftInMillis,1000) {
+            @Override
+            public void onTick(long l) {
+                timeLeftInMillis =l;
+                updateCountDownText();
+
+            }
+
+            @Override
+            public void onFinish() {
+                timeLeftInMillis=0;
+                updateCountDownText();
+                checkAnswer();
+
+            }
+        }.start();
+    }
+
+    private void updateCountDownText() {
+        int minutes = (int) (timeLeftInMillis / 1000) / 60;
+        int second  = (int)(timeLeftInMillis /1000) % 60;
+
+        String timeFormet = String.format(Locale.getDefault(),"%02d:%02d",minutes,second);
+        tvTimeCounter.setText(timeFormet);
+
+        if(timeLeftInMillis < 10000){
+            tvTimeCounter.setTextColor(Color.RED);
+        }else {
+            tvTimeCounter.setTextColor(textColorDefoltCd);
+        }
     }
 
     private void finishQuiz() {
@@ -157,6 +203,7 @@ public class QuizActivity extends AppCompatActivity {
         btnConfirm = findViewById(R.id.button_confirm);
 
         textColorDefoltRb =radioButton1.getTextColors();
+        textColorDefoltCd =tvTimeCounter.getTextColors();
 
         QuizBdHelper bdHelper= new QuizBdHelper(this);
 
@@ -176,5 +223,13 @@ public class QuizActivity extends AppCompatActivity {
             Toast.makeText(this, "Press back again to finish", Toast.LENGTH_SHORT).show();
         }
          backPressedTime = System.currentTimeMillis();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if(countDownTimer != null){
+            countDownTimer.cancel();
+        }
     }
 }
