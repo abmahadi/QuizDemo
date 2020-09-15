@@ -14,6 +14,7 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
@@ -21,6 +22,12 @@ import java.util.Locale;
 public class QuizActivity extends AppCompatActivity {
     public static  final String EXTRA_SCORE = "extraScore";
     private static  final long COUNTDOWN_IN_MILLIS = 30000;
+
+    private static final String KEY_SCORE = "keyScore";
+    private static final String KEY_QUESTION_COUNT = "keyQuestionCount";
+    private static final String KEY_MILLIS_LEFT ="keyMillisLeft";
+    private static final String KEY_ANSWERED ="keyAnswered";
+    private static final String KEY_QUESTION_LIST = "ketQuestionList";
 
     private TextView tvScore;
     private TextView tvQuestionCount;
@@ -38,7 +45,7 @@ public class QuizActivity extends AppCompatActivity {
     private CountDownTimer countDownTimer;
     private long timeLeftInMillis;
 
-    private List<Question> questionList;
+    private ArrayList<Question> questionList;
 
     private  int questionCounter;
     private  int questionCountertotal;
@@ -56,7 +63,30 @@ public class QuizActivity extends AppCompatActivity {
         setContentView(R.layout.activity_quiz);
         init();
 
+        if(savedInstanceState == null){
+
+        QuizBdHelper bdHelper= new QuizBdHelper(QuizActivity.this);
+       // questionList = bdHelper.getAllQuestion();
+        questionList =bdHelper.getQuestion("Medium");
+        questionCountertotal =questionList.size();
+        Collections.shuffle(questionList);
         showNextQuestion();
+        }else {
+            questionList = savedInstanceState.getParcelableArrayList(KEY_QUESTION_LIST);
+            questionCountertotal = questionList.size();
+            questionCounter = savedInstanceState.getInt(KEY_QUESTION_COUNT);
+            currentQuestion = questionList.get(questionCounter - 1);
+            scorePoint = savedInstanceState.getInt(KEY_SCORE);
+            timeLeftInMillis = savedInstanceState.getLong(KEY_MILLIS_LEFT);
+            answared = savedInstanceState.getBoolean(KEY_ANSWERED);
+
+            if(!answared){
+                startCountDown();
+            }else {
+                updateCountDownText();
+                showSolution();
+            }
+        }
 
         btnConfirm.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -205,12 +235,7 @@ public class QuizActivity extends AppCompatActivity {
         textColorDefoltRb =radioButton1.getTextColors();
         textColorDefoltCd =tvTimeCounter.getTextColors();
 
-        QuizBdHelper bdHelper= new QuizBdHelper(this);
 
-        questionList = bdHelper.getAllQuestion() ;
-
-        questionCountertotal =questionList.size();
-        Collections.shuffle(questionList);
 
     }
 
@@ -231,5 +256,14 @@ public class QuizActivity extends AppCompatActivity {
         if(countDownTimer != null){
             countDownTimer.cancel();
         }
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt(KEY_SCORE,scorePoint);
+        outState.putInt(KEY_QUESTION_COUNT,questionCounter);
+        outState.putBoolean(KEY_ANSWERED,answared);
+        outState.putParcelableArrayList(KEY_QUESTION_LIST,questionList);
     }
 }

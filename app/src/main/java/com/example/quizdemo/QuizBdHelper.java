@@ -31,7 +31,9 @@ public class QuizBdHelper extends SQLiteOpenHelper {
                 QuizContract.QuestionTable.COLUMN_OPTION1 +" TEXT, "+
                 QuizContract.QuestionTable.COLUMN_OPTION2 +" TEXT, "+
                 QuizContract.QuestionTable.COLUMN_OPTION3 + " TEXT, "+
-                QuizContract.QuestionTable.COLUMN_ANSWER+ " INTEGER " +")";
+                QuizContract.QuestionTable.COLUMN_ANSWER+ " INTEGER, " +
+                QuizContract.QuestionTable.COLUMN_DIFFICULTY + " TEXT" +
+                ")";
 
         db.execSQL(SQL_CREATE_QUESTION_TABLE);
         
@@ -47,14 +49,17 @@ public class QuizBdHelper extends SQLiteOpenHelper {
     }
 
     private void fillQuestionTable() {
-        Question q1 = new Question("A is correct","A","B","C",1);
+        Question q1 = new Question("A is correct","A","B","C",1,Question.DIFFICULTY_EASY);
         addQquestion(q1);
-        Question q2 = new Question("B is correct","A","B","C",2);
+        Question q2 = new Question("A is correct","A","B","C",1,Question.DIFFICULTY_MEDIUM);
         addQquestion(q2);
-        Question q3 = new Question("C is correct","A","B","C",3);
+        Question q3 = new Question("A is correct","A","B","C",1,Question.DIFFICULTY_MEDIUM);
         addQquestion(q3);
-        Question q4 = new Question("D is correct","A","B","D",3);
+        Question q4 = new Question("A is correct","A","B","C",1,Question.DIFFICULTY_HARD);
         addQquestion(q4);
+        Question q5 = new Question("A is correct","A","B","C",1,Question.DIFFICULTY_HARD);
+        addQquestion(q5);
+
     }
     private void addQquestion(Question question){
         ContentValues cv= new ContentValues();
@@ -63,13 +68,14 @@ public class QuizBdHelper extends SQLiteOpenHelper {
         cv.put(QuizContract.QuestionTable.COLUMN_OPTION2,question.getOption2());
         cv.put(QuizContract.QuestionTable.COLUMN_OPTION3,question.getOption3());
         cv.put(QuizContract.QuestionTable.COLUMN_ANSWER,question.getAnswerNo());
+        cv.put(QuizContract.QuestionTable.COLUMN_DIFFICULTY,question.getDifficulty());
 
         db.insert(QuizContract.QuestionTable.TABLE_NAME,null,cv);
     }
 
-    public List<Question> getAllQuestion(){
+    public ArrayList<Question> getAllQuestion(){
 
-        List<Question> questionList =new ArrayList<>();
+        ArrayList<Question> questionList =new ArrayList<>();
 
         db = getReadableDatabase();
 
@@ -84,6 +90,37 @@ public class QuizBdHelper extends SQLiteOpenHelper {
                 question.setOption2(c.getString(c.getColumnIndex(QuizContract.QuestionTable.COLUMN_OPTION2)));
                 question.setOption3(c.getString(c.getColumnIndex(QuizContract.QuestionTable.COLUMN_OPTION3)));
                 question.setAnswerNo(c.getInt(c.getColumnIndex(QuizContract.QuestionTable.COLUMN_ANSWER)));
+                question.setDifficulty(c.getString(c.getColumnIndex(QuizContract.QuestionTable.COLUMN_DIFFICULTY)));
+
+                questionList.add(question);
+
+            }while (c.moveToNext());
+        }
+        c.close();
+        return  questionList;
+
+    }
+
+    public ArrayList<Question> getQuestion(String difficulty){
+
+        ArrayList<Question> questionList =new ArrayList<>();
+
+        db = getReadableDatabase();
+        String[] selectionArgs = new String[]{difficulty};
+
+        Cursor c = db.rawQuery("SELECT * FROM "+ QuizContract.QuestionTable.TABLE_NAME +
+                " WHERE " + QuizContract.QuestionTable.COLUMN_DIFFICULTY + " = ?",selectionArgs);
+        if(c.moveToFirst())
+        {
+            do
+            {
+                Question question =new Question();
+                question.setQuestion(c.getString(c.getColumnIndex(QuizContract.QuestionTable.COLUMN_QUESTION)));
+                question.setOption1(c.getString(c.getColumnIndex(QuizContract.QuestionTable.COLUMN_OPTION1)));
+                question.setOption2(c.getString(c.getColumnIndex(QuizContract.QuestionTable.COLUMN_OPTION2)));
+                question.setOption3(c.getString(c.getColumnIndex(QuizContract.QuestionTable.COLUMN_OPTION3)));
+                question.setAnswerNo(c.getInt(c.getColumnIndex(QuizContract.QuestionTable.COLUMN_ANSWER)));
+                question.setDifficulty(c.getString(c.getColumnIndex(QuizContract.QuestionTable.COLUMN_DIFFICULTY)));
 
                 questionList.add(question);
 
