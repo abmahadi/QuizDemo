@@ -25,6 +25,15 @@
         android:textColor="@color/colorBlack"
         android:layout_below="@id/textview_score"
         android:freezesText="true"></TextView>
+    <TextView
+        android:id="@+id/textview_difficulty"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Difficulty :"
+        android:textSize="15sp"
+        android:textColor="@color/colorBlack"
+        android:layout_below="@id/textview_questionCount"
+        android:freezesText="true"></TextView>
 
     <TextView
         android:id="@+id/textview_timeCounter"

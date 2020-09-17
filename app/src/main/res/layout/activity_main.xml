@@ -16,16 +16,6 @@
         android:textSize="40sp"
         android:textColor="@color/colorPrimaryDark"></TextView>
 
-    <Button
-        android:id="@+id/button_start_quiz"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Start Quiz"
-        android:textSize="20sp"
-        android:padding="10dp"
-        android:textColor="@color/colorBlack"
-        android:layout_centerInParent="true"
-        android:textAllCaps="false"></Button>
     <TextView
         android:id="@+id/textview_highscore"
         android:layout_width="wrap_content"
@@ -36,7 +26,42 @@
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="15dp"
         android:textAllCaps="false"
-        android:layout_above="@id/button_start_quiz"></TextView>
+        android:layout_above="@id/difficultyLayout"></TextView>
+
+    <LinearLayout
+        android:id="@+id/difficultyLayout"
+        android:layout_above="@id/button_start_quiz"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:orientation="horizontal"
+        android:gravity="center">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Select Difficulty :"
+            android:textSize="15sp"
+            android:textColor="@color/colorBlack"></TextView>
+        <Spinner
+            android:id="@+id/difficultySpinner"
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"></Spinner>
+
+    </LinearLayout>
+
+
+    <Button
+        android:id="@+id/button_start_quiz"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Start Quiz"
+        android:textSize="20sp"
+        android:padding="10dp"
+        android:textColor="@color/colorBlack"
+        android:layout_centerInParent="true"
+        android:textAllCaps="false"></Button>
 
 
 

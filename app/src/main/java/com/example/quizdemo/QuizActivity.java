@@ -31,6 +31,7 @@ public class QuizActivity extends AppCompatActivity {
 
     private TextView tvScore;
     private TextView tvQuestionCount;
+    private TextView tvDifficulty;
     private TextView tvTimeCounter;
     private TextView tvQuestion;
     private RadioGroup radioGroup;
@@ -63,11 +64,15 @@ public class QuizActivity extends AppCompatActivity {
         setContentView(R.layout.activity_quiz);
         init();
 
+        Intent intent =getIntent();
+        String difficulty = intent.getStringExtra(MainActivity.EXTRA_DIFFICULTY);
+        tvDifficulty.setText("Difficulty :"+difficulty);
+
         if(savedInstanceState == null){
 
         QuizBdHelper bdHelper= new QuizBdHelper(QuizActivity.this);
        // questionList = bdHelper.getAllQuestion();
-        questionList =bdHelper.getQuestion("Medium");
+        questionList =bdHelper.getQuestion(difficulty);
         questionCountertotal =questionList.size();
         Collections.shuffle(questionList);
         showNextQuestion();
@@ -224,6 +229,7 @@ public class QuizActivity extends AppCompatActivity {
     private void init() {
         tvScore =findViewById(R.id.textview_score);
         tvQuestionCount =findViewById(R.id.textview_questionCount);
+        tvDifficulty = findViewById(R.id.textview_difficulty);
         tvTimeCounter =findViewById(R.id.textview_timeCounter);
         tvQuestion = findViewById(R.id.textview_Question);
         radioGroup = findViewById(R.id.radiogroup_answareOption);
