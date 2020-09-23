@@ -72,7 +72,7 @@ public class QuizActivity extends AppCompatActivity {
 
         QuizBdHelper bdHelper= new QuizBdHelper(QuizActivity.this);
        // questionList = bdHelper.getAllQuestion();
-        questionList =bdHelper.getQuestion(difficulty);
+        questionList =bdHelper.getQuestion(difficulty );
         questionCountertotal =questionList.size();
         Collections.shuffle(questionList);
         showNextQuestion();
