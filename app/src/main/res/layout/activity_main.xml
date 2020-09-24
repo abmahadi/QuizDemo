@@ -21,21 +21,26 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="HighScore : 0"
-        android:textSize="15sp"
+        android:textSize="20sp"
+        android:textStyle="bold"
         android:textColor="@color/colorBlack"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="15dp"
         android:textAllCaps="false"
         android:layout_above="@id/difficultyLayout"></TextView>
 
+
+
+
     <LinearLayout
         android:id="@+id/difficultyLayout"
-        android:layout_above="@id/button_start_quiz"
+        android:layout_above="@id/categoryLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="16dp"
         android:orientation="horizontal"
         android:gravity="center">
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -48,6 +53,30 @@
             android:layout_gravity="center"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"></Spinner>
+
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/categoryLayout"
+        android:layout_above="@id/button_start_quiz"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:layout_marginBottom="10dp"
+        android:orientation="horizontal"
+        android:gravity="center">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Select Category :"
+            android:textSize="15sp"
+            android:textColor="@color/colorBlack"></TextView>
+        <Spinner
+            android:id="@+id/categorySpinner"
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"></Spinner>
+
 
     </LinearLayout>
 

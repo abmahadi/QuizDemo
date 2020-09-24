@@ -31,6 +31,7 @@ public class QuizActivity extends AppCompatActivity {
 
     private TextView tvScore;
     private TextView tvQuestionCount;
+    private TextView tvCategory;
     private TextView tvDifficulty;
     private TextView tvTimeCounter;
     private TextView tvQuestion;
@@ -65,14 +66,18 @@ public class QuizActivity extends AppCompatActivity {
         init();
 
         Intent intent =getIntent();
+        int categoryID = intent.getIntExtra(MainActivity.EXTRA_CATEGORY_ID,0);
+        String categoryName = intent.getStringExtra(MainActivity.EXTRA_CATEGORY_NAME);
         String difficulty = intent.getStringExtra(MainActivity.EXTRA_DIFFICULTY);
+
+        tvCategory.setText("Category :" + categoryName);
         tvDifficulty.setText("Difficulty :"+difficulty);
 
         if(savedInstanceState == null){
 
-        QuizBdHelper bdHelper= new QuizBdHelper(QuizActivity.this);
+        QuizBdHelper bdHelper= QuizBdHelper.getInstance(this);
        // questionList = bdHelper.getAllQuestion();
-        questionList =bdHelper.getQuestion(difficulty );
+        questionList =bdHelper.getQuestion(categoryID,difficulty );
         questionCountertotal =questionList.size();
         Collections.shuffle(questionList);
         showNextQuestion();
@@ -229,6 +234,7 @@ public class QuizActivity extends AppCompatActivity {
     private void init() {
         tvScore =findViewById(R.id.textview_score);
         tvQuestionCount =findViewById(R.id.textview_questionCount);
+        tvCategory = findViewById(R.id.textview_category);
         tvDifficulty = findViewById(R.id.textview_difficulty);
         tvTimeCounter =findViewById(R.id.textview_timeCounter);
         tvQuestion = findViewById(R.id.textview_Question);
